@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MapaEstilos</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="MAPS_API_KEY">AIzaSyAE2FT2gMY7Z3xDKcnh1BVxaa2U_JDCePo</string>
+</resources>
