@@ -2,6 +2,7 @@ package com.example.mapaestilos;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.res.Resources;
@@ -20,7 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mapaestilos.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerDragListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -50,6 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        // click sobre le mapa
+        mMap.setOnMapClickListener(this);
+
+        //Eventos marcadores
+        mMap.setOnMarkerDragListener(this);
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
@@ -83,4 +90,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // Position the map's camera near Sydney, Australia.
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(-34, 151)));
         }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        mMap.addMarker(
+                new MarkerOptions().position(latLng)
+                        .title("Nuevo marcador")
+                        .draggable(true)
+        );
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+    }
+
+    @Override
+    public void onMarkerDrag(@NonNull Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(@NonNull Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragStart(@NonNull Marker marker) {
+        LatLng posicion = marker.getPosition();
+        marker.setSnippet(posicion.latitude + ", " + posicion.longitude);
+        marker.showInfoWindow();
+    }
+
+
 }
